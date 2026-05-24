@@ -8,6 +8,13 @@ root.configure(bg="#5DF2A7")
 status_text = tk.StringVar()
 status_text.set("Waiting for the food...")
 
+def get_metrics():
+
+    calories_label.config(text="Calories: 23")
+    protein_label.config(text="Protein: 1g")
+    fat_label.config(text="Fat: 2g")
+    carbs_label.config(text="Carbohydrates: 21g")
+
 title_label = tk.Label(
     root,
     text="Food Nutrition Scraper",
@@ -41,6 +48,16 @@ food_name = tk.Entry(
     justify="center"
 )
 food_name.pack(side="left")
+
+search_button = tk.Button(
+    root,
+    text="Search",
+    font=("Arial", 14, "bold"),
+    bg="#63DF10",
+    fg="white",
+    command=get_metrics
+)
+search_button.pack(pady=10)
 
 status_label = tk.Label(
     root,
