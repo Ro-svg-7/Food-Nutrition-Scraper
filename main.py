@@ -1,4 +1,5 @@
 import tkinter as tk
+from test_scraper import scrape_food
 
 root = tk.Tk()
 root.geometry("650x550")
@@ -9,16 +10,23 @@ status_text = tk.StringVar()
 status_text.set("Waiting for the food...")
 
 def get_metrics():
-    food = food_name.get().lower
-    if food == "banana":
-        calories_label.config(text="Calories: 23")
-        protein_label.config(text="Protein: 1g")
-        fat_label.config(text="Fat: 2g")
-        carbs_label.config(text="Carbohydrates: 21g")
+    food = food_name.get().lower()
+    
+    try:
+        nutrients = scrape_food(food)
 
-        status_text.set(f"Results for {food} 👇")
-    else:
-        status_text.set("╯︿╰Food not found ╯︿╰")
+        calories_label.config(
+            text=f"Calories: {nutrients['Calories']}")
+        protein_label.config(
+            text=f"Protein: {nutrients['Protein']}"
+        )
+        fat_label.config(text=f"Fat: {nutrients['Fat']}")
+        carbs_label.config(text=f"Carbohydrate: {nutrients['Carbohydrates']}")
+
+        status_text.set(f"Results for {food.title()}")
+    except Exception as e:
+        status_text.set("╯︿╰ Food not found ╯︿╰")
+        print(e)
 
 title_label = tk.Label(
     root,
@@ -90,7 +98,7 @@ calories_label.pack(anchor="w", pady=10)
 
 protein_label = tk.Label(
     metrics_frame,
-    text="Protien: --",
+    text="Protein: --",
     font=("Arial", 14),
     bg="#9ABBE9",
     fg="black"

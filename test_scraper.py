@@ -46,7 +46,7 @@ def scrape_food(food):
 
     return nutrients
 
-print(scrape_food("banana"))
-print(scrape_food("apple"))
+# print(scrape_food("banana"))
+# print(scrape_food("apple"))
 
 
