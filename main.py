@@ -1,5 +1,6 @@
 import tkinter as tk
 from test_scraper import scrape_food
+import csv
 
 root = tk.Tk()
 root.geometry("650x550")
@@ -9,6 +10,35 @@ root.configure(bg="#5DF2A7")
 status_text = tk.StringVar()
 status_text.set("Waiting for the food...")
 
+def create_csv():
+    try:
+        with open("nutrition_data.csv", "x", newline="") as file:
+            writer = csv.writer(file)
+
+            writer.writerow([
+                "Food",
+                "Calories",
+                "Protein",
+                "Carbohydrates",
+                "Fat"
+            ])
+    except FileExistsError:
+        pass
+
+def save_to_csv(food, nutrients):
+    with open("nutrition_data.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+
+    writer.writerow([
+        food,
+        nutrients["Calories"],
+        nutrients["Protein"],
+        nutrients["Carbohydrates"],
+        nutrients["Fat"]
+    ])
+
+    status_text.set(f"{food.title()} saved to csv!😋")
+    
 def get_metrics():
     food = food_name.get().lower()
     
@@ -24,6 +54,9 @@ def get_metrics():
         carbs_label.config(text=f"Carbohydrate: {nutrients['Carbohydrates']}")
 
         status_text.set(f"Results for {food.title()}")
+
+        save_to_csv(food, nutrients)
+
     except Exception as e:
         status_text.set("╯︿╰ Food not found ╯︿╰")
         print(e)
@@ -123,4 +156,5 @@ fat_label = tk.Label(
 )
 fat_label.pack(anchor="w", pady=10)
 
+create_csv()
 root.mainloop()
