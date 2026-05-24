@@ -9,11 +9,16 @@ status_text = tk.StringVar()
 status_text.set("Waiting for the food...")
 
 def get_metrics():
+    food = food_name.get().lower
+    if food == "banana":
+        calories_label.config(text="Calories: 23")
+        protein_label.config(text="Protein: 1g")
+        fat_label.config(text="Fat: 2g")
+        carbs_label.config(text="Carbohydrates: 21g")
 
-    calories_label.config(text="Calories: 23")
-    protein_label.config(text="Protein: 1g")
-    fat_label.config(text="Fat: 2g")
-    carbs_label.config(text="Carbohydrates: 21g")
+        status_text.set(f"Results for {food} 👇")
+    else:
+        status_text.set("╯︿╰Food not found ╯︿╰")
 
 title_label = tk.Label(
     root,
@@ -64,7 +69,7 @@ status_label = tk.Label(
     textvariable=status_text,
     font=("Arial", 14, "bold"),
     bg="#5DF2A7",
-    fg="#E9F108"
+    fg="#180DED"
 )
 status_label.pack(pady=(20,25))
 
