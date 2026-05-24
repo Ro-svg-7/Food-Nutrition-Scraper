@@ -1,9 +1,9 @@
 import tkinter as tk
-from test_scraper import scrape_food
+from test_scraper import scrape_food, get_facts
 import csv
 
 root = tk.Tk()
-root.geometry("650x550")
+root.geometry("750x650")
 root.title("Food Nutrition Srcaper")
 root.configure(bg="#5DF2A7")
 
@@ -29,16 +29,14 @@ def save_to_csv(food, nutrients):
     with open("nutrition_data.csv", "a", newline="") as file:
         writer = csv.writer(file)
 
-    writer.writerow([
-        food,
-        nutrients["Calories"],
-        nutrients["Protein"],
-        nutrients["Carbohydrates"],
-        nutrients["Fat"]
-    ])
+        writer.writerow([
+            food,
+            nutrients["Calories"],
+            nutrients["Protein"],
+            nutrients["Carbohydrates"],
+            nutrients["Fat"]
+        ])
 
-    status_text.set(f"{food.title()} saved to csv!😋")
-    
 def get_metrics():
     food = food_name.get().lower()
     
@@ -54,6 +52,18 @@ def get_metrics():
         carbs_label.config(text=f"Carbohydrate: {nutrients['Carbohydrates']}")
 
         status_text.set(f"Results for {food.title()}")
+
+        facts = get_facts(food)
+        fact_label.config(
+        text=(
+            f"🔥 To burn these calories:\n"
+            f"👣 Steps: {facts.get('Steps', '--')}\n"
+            f"🚶 Walking: {facts.get('Walking', '--')}\n"
+            f"🏃 Running: {facts.get('Running', '--')}\n"
+            f"🚴 Cycling: {facts.get('Cycling', '--')}"
+        ),
+        bg="#91F25D"
+    )
 
         save_to_csv(food, nutrients)
 
@@ -155,6 +165,17 @@ fat_label = tk.Label(
     fg="black"
 )
 fat_label.pack(anchor="w", pady=10)
+
+fact_label = tk.Label(
+    root,
+    text="There's a health advice here, check you calories to unlock!",
+    font=("Arial", 14, "bold"),
+    bg="#F13E83",
+    fg="black",
+    justify="left",
+    wraplength=500
+)
+fact_label.pack(pady=6)
 
 create_csv()
 root.mainloop()
