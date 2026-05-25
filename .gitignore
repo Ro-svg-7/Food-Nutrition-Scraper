@@ -1,0 +1,14 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+.env
+
+# CSV data
+nutrition_data.csv
+
+# VS Code
+.vscode/
+
